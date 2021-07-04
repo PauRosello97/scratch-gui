@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {compose} from 'redux';
+import { compose } from 'redux';
 
 import AppStateHOC from '../lib/app-state-hoc.jsx';
 import GUI from '../containers/gui.jsx';
@@ -44,17 +44,6 @@ export default appTarget => {
     const backpackHost = backpackHostMatches ? backpackHostMatches[1] : null;
 
     const scratchDesktopMatches = window.location.href.match(/[?&]isScratchDesktop=([^&]+)/);
-    let simulateScratchDesktop;
-    if (scratchDesktopMatches) {
-        try {
-            // parse 'true' into `true`, 'false' into `false`, etc.
-            simulateScratchDesktop = JSON.parse(scratchDesktopMatches[1]);
-        } catch {
-            // it's not JSON so just use the string
-            // note that a typo like "falsy" will be treated as true
-            simulateScratchDesktop = scratchDesktopMatches[1];
-        }
-    }
 
     if (process.env.NODE_ENV === 'production' && typeof window === 'object') {
         // Warn before navigating away
@@ -62,24 +51,13 @@ export default appTarget => {
     }
 
     ReactDOM.render(
-        // important: this is checking whether `simulateScratchDesktop` is truthy, not just defined!
-        simulateScratchDesktop ?
-            <WrappedGui
-                canEditTitle
-                isScratchDesktop
-                showTelemetryModal
-                canSave={false}
-                onTelemetryModalCancel={handleTelemetryModalCancel}
-                onTelemetryModalOptIn={handleTelemetryModalOptIn}
-                onTelemetryModalOptOut={handleTelemetryModalOptOut}
-            /> :
-            <WrappedGui
-                canEditTitle
-                backpackVisible
-                showComingSoon
-                backpackHost={backpackHost}
-                canSave={false}
-                onClickLogo={onClickLogo}
-            />,
+        <WrappedGui
+            canEditTitle
+            backpackVisible={false}
+            showComingSoon
+            backpackHost={backpackHost}
+            canSave={false}
+            onClickLogo={onClickLogo}
+        />,
         appTarget);
 };
