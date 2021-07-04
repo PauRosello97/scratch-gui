@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import VM from 'scratch-vm';
+import VM from '../../lib/scratch-vm/scratch-vm';
 
 import SpriteLibrary from '../../containers/sprite-library.jsx';
 import SpriteSelectorComponent from '../sprite-selector/sprite-selector.jsx';
 import StageSelector from '../../containers/stage-selector.jsx';
-import {STAGE_DISPLAY_SIZES} from '../../lib/layout-constants';
+import { STAGE_DISPLAY_SIZES } from '../../lib/layout-constants';
 
 import styles from './target-pane.css';
 

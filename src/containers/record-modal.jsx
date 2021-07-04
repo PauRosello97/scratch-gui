@@ -1,9 +1,9 @@
 import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
-import VM from 'scratch-vm';
-import {connect} from 'react-redux';
-import {encodeAndAddSoundToVM} from '../lib/audio/audio-util.js';
+import VM from '../lib/scratch-vm/scratch-vm';
+import { connect } from 'react-redux';
+import { encodeAndAddSoundToVM } from '../lib/audio/audio-util.js';
 
 import RecordModalComponent from '../components/record-modal/record-modal.jsx';
 
@@ -12,7 +12,7 @@ import {
 } from '../reducers/modals';
 
 class RecordModal extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'handleRecord',
@@ -39,34 +39,34 @@ class RecordModal extends React.Component {
             trimEnd: 1
         };
     }
-    handleRecord () {
-        this.setState({recording: true});
+    handleRecord() {
+        this.setState({ recording: true });
     }
-    handleStopRecording (samples, sampleRate, levels, trimStart, trimEnd) {
+    handleStopRecording(samples, sampleRate, levels, trimStart, trimEnd) {
         if (samples.length > 0) {
-            this.setState({samples, sampleRate, levels, trimStart, trimEnd, recording: false});
+            this.setState({ samples, sampleRate, levels, trimStart, trimEnd, recording: false });
         }
     }
-    handlePlay () {
-        this.setState({playing: true});
+    handlePlay() {
+        this.setState({ playing: true });
     }
-    handleStopPlaying () {
-        this.setState({playing: false, playhead: null});
+    handleStopPlaying() {
+        this.setState({ playing: false, playhead: null });
     }
-    handleBack () {
-        this.setState({playing: false, samples: null});
+    handleBack() {
+        this.setState({ playing: false, samples: null });
     }
-    handleSetTrimEnd (trimEnd) {
-        this.setState({trimEnd});
+    handleSetTrimEnd(trimEnd) {
+        this.setState({ trimEnd });
     }
-    handleSetTrimStart (trimStart) {
-        this.setState({trimStart});
+    handleSetTrimStart(trimStart) {
+        this.setState({ trimStart });
     }
-    handleSetPlayhead (playhead) {
-        this.setState({playhead});
+    handleSetPlayhead(playhead) {
+        this.setState({ playhead });
     }
-    handleSubmit () {
-        this.setState({encoding: true}, () => {
+    handleSubmit() {
+        this.setState({ encoding: true }, () => {
             const sampleCount = this.state.samples.length;
             const startIndex = Math.floor(this.state.trimStart * sampleCount);
             const endIndex = Math.floor(this.state.trimEnd * sampleCount);
@@ -79,10 +79,10 @@ class RecordModal extends React.Component {
                 });
         });
     }
-    handleCancel () {
+    handleCancel() {
         this.props.onClose();
     }
-    render () {
+    render() {
         return (
             <RecordModalComponent
                 encoding={this.state.encoding}

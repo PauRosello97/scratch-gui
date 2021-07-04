@@ -1,29 +1,29 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import bindAll from 'lodash.bindall';
-import VM from 'scratch-vm';
+import VM from '../lib/scratch-vm/scratch-vm';
 import PaintEditor from 'scratch-paint';
-import {inlineSvgFonts} from 'scratch-svg-renderer';
+import { inlineSvgFonts } from 'scratch-svg-renderer';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 class PaintEditorWrapper extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'handleUpdateImage',
             'handleUpdateName'
         ]);
     }
-    shouldComponentUpdate (nextProps) {
+    shouldComponentUpdate(nextProps) {
         return this.props.imageId !== nextProps.imageId ||
             this.props.rtl !== nextProps.rtl ||
             this.props.name !== nextProps.name;
     }
-    handleUpdateName (name) {
+    handleUpdateName(name) {
         this.props.vm.renameCostume(this.props.selectedCostumeIndex, name);
     }
-    handleUpdateImage (isVector, image, rotationCenterX, rotationCenterY) {
+    handleUpdateImage(isVector, image, rotationCenterX, rotationCenterY) {
         if (isVector) {
             this.props.vm.updateSvg(
                 this.props.selectedCostumeIndex,
@@ -39,7 +39,7 @@ class PaintEditorWrapper extends React.Component {
                 2 /* bitmapResolution */);
         }
     }
-    render () {
+    render() {
         if (!this.props.imageId) return null;
         const {
             selectedCostumeIndex,
@@ -70,7 +70,7 @@ PaintEditorWrapper.propTypes = {
     vm: PropTypes.instanceOf(VM)
 };
 
-const mapStateToProps = (state, {selectedCostumeIndex}) => {
+const mapStateToProps = (state, { selectedCostumeIndex }) => {
     const targetId = state.scratchGui.vm.editingTarget.id;
     const sprite = state.scratchGui.vm.editingTarget.sprite;
     // Make sure the costume index doesn't go out of range.

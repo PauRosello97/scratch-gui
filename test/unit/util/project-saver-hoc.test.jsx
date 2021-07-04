@@ -2,9 +2,9 @@ import 'web-audio-test-api';
 
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import {mount} from 'enzyme';
-import {LoadingState} from '../../../src/reducers/project-state';
-import VM from 'scratch-vm';
+import { mount } from 'enzyme';
+import { LoadingState } from '../../../src/reducers/project-state';
+import VM from '../../lib/scratch-vm/scratch-vm';
 
 import projectSaverHOC from '../../../src/lib/project-saver-hoc.jsx';
 
@@ -269,35 +269,35 @@ describe('projectSaverHOC', () => {
     });
 
     test('if we are already in updating/saving state, vm project ' +
-            'should NOT requested, alert should NOT show', () => {
-        const mockedShowCreatingAlert = jest.fn();
-        const Component = () => <div />;
-        const WrappedComponent = projectSaverHOC(Component);
-        const mockedStoreProject = jest.fn(() => Promise.resolve());
-        // The first wrapper is redux's Connect HOC
-        WrappedComponent.WrappedComponent.prototype.storeProject = mockedStoreProject;
-        const mounted = mount(
-            <WrappedComponent
-                canSave
-                isUpdating
-                isCreatingNew={false}
-                isShowingWithId={false}
-                isShowingWithoutId={false}
-                loadingState={LoadingState.MANUAL_UPDATING}
-                reduxProjectId={'100'}
-                store={store}
-                vm={vm}
-                onShowCreatingAlert={mockedShowCreatingAlert}
-            />
-        );
-        mounted.setProps({
-            isUpdating: true,
-            loadingState: LoadingState.AUTO_UPDATING,
-            reduxProjectId: '99' // random change to force a re-render and componentDidUpdate
+        'should NOT requested, alert should NOT show', () => {
+            const mockedShowCreatingAlert = jest.fn();
+            const Component = () => <div />;
+            const WrappedComponent = projectSaverHOC(Component);
+            const mockedStoreProject = jest.fn(() => Promise.resolve());
+            // The first wrapper is redux's Connect HOC
+            WrappedComponent.WrappedComponent.prototype.storeProject = mockedStoreProject;
+            const mounted = mount(
+                <WrappedComponent
+                    canSave
+                    isUpdating
+                    isCreatingNew={false}
+                    isShowingWithId={false}
+                    isShowingWithoutId={false}
+                    loadingState={LoadingState.MANUAL_UPDATING}
+                    reduxProjectId={'100'}
+                    store={store}
+                    vm={vm}
+                    onShowCreatingAlert={mockedShowCreatingAlert}
+                />
+            );
+            mounted.setProps({
+                isUpdating: true,
+                loadingState: LoadingState.AUTO_UPDATING,
+                reduxProjectId: '99' // random change to force a re-render and componentDidUpdate
+            });
+            expect(mockedStoreProject).not.toHaveBeenCalled();
+            expect(mockedShowCreatingAlert).not.toHaveBeenCalled();
         });
-        expect(mockedStoreProject).not.toHaveBeenCalled();
-        expect(mockedShowCreatingAlert).not.toHaveBeenCalled();
-    });
 
     test('if user saves, inline saving alert should show', () => {
         const mockedShowSavingAlert = jest.fn();

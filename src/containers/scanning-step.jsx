@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import bindAll from 'lodash.bindall';
 import ScanningStepComponent from '../components/connection-modal/scanning-step.jsx';
-import VM from 'scratch-vm';
+import VM from '../lib/scratch-vm/scratch-vm';
 
 class ScanningStep extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'handlePeripheralListUpdate',
@@ -17,41 +17,41 @@ class ScanningStep extends React.Component {
             peripheralList: []
         };
     }
-    componentDidMount () {
+    componentDidMount() {
         this.props.vm.scanForPeripheral(this.props.extensionId);
         this.props.vm.on(
             'PERIPHERAL_LIST_UPDATE', this.handlePeripheralListUpdate);
         this.props.vm.on(
             'PERIPHERAL_SCAN_TIMEOUT', this.handlePeripheralScanTimeout);
     }
-    componentWillUnmount () {
+    componentWillUnmount() {
         // @todo: stop the peripheral scan here
         this.props.vm.removeListener(
             'PERIPHERAL_LIST_UPDATE', this.handlePeripheralListUpdate);
         this.props.vm.removeListener(
             'PERIPHERAL_SCAN_TIMEOUT', this.handlePeripheralScanTimeout);
     }
-    handlePeripheralScanTimeout () {
+    handlePeripheralScanTimeout() {
         this.setState({
             scanning: false,
             peripheralList: []
         });
     }
-    handlePeripheralListUpdate (newList) {
+    handlePeripheralListUpdate(newList) {
         // TODO: sort peripherals by signal strength? so they don't jump around
         const peripheralArray = Object.keys(newList).map(id =>
             newList[id]
         );
-        this.setState({peripheralList: peripheralArray});
+        this.setState({ peripheralList: peripheralArray });
     }
-    handleRefresh () {
+    handleRefresh() {
         this.props.vm.scanForPeripheral(this.props.extensionId);
         this.setState({
             scanning: true,
             peripheralList: []
         });
     }
-    render () {
+    render() {
         return (
             <ScanningStepComponent
                 connectionSmallIconURL={this.props.connectionSmallIconURL}

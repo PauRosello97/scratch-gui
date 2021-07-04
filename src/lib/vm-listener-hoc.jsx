@@ -1,17 +1,17 @@
 import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
-import VM from 'scratch-vm';
+import VM from '../lib/scratch-vm/scratch-vm';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-import {updateTargets} from '../reducers/targets';
-import {updateBlockDrag} from '../reducers/block-drag';
-import {updateMonitors} from '../reducers/monitors';
-import {setProjectChanged, setProjectUnchanged} from '../reducers/project-changed';
-import {setRunningState, setTurboState, setStartedState} from '../reducers/vm-status';
-import {showExtensionAlert} from '../reducers/alerts';
-import {updateMicIndicator} from '../reducers/mic-indicator';
+import { updateTargets } from '../reducers/targets';
+import { updateBlockDrag } from '../reducers/block-drag';
+import { updateMonitors } from '../reducers/monitors';
+import { setProjectChanged, setProjectUnchanged } from '../reducers/project-changed';
+import { setRunningState, setTurboState, setStartedState } from '../reducers/vm-status';
+import { showExtensionAlert } from '../reducers/alerts';
+import { updateMicIndicator } from '../reducers/mic-indicator';
 
 /*
  * Higher Order Component to manage events emitted by the VM
@@ -20,7 +20,7 @@ import {updateMicIndicator} from '../reducers/mic-indicator';
  */
 const vmListenerHOC = function (WrappedComponent) {
     class VMListener extends React.Component {
-        constructor (props) {
+        constructor(props) {
             super(props);
             bindAll(this, [
                 'handleKeyDown',
@@ -48,16 +48,16 @@ const vmListenerHOC = function (WrappedComponent) {
             this.props.vm.on('MIC_LISTENING', this.props.onMicListeningUpdate);
 
         }
-        componentDidMount () {
+        componentDidMount() {
             if (this.props.attachKeyboardEvents) {
                 document.addEventListener('keydown', this.handleKeyDown);
                 document.addEventListener('keyup', this.handleKeyUp);
             }
-            this.props.vm.postIOData('userData', {username: this.props.username});
+            this.props.vm.postIOData('userData', { username: this.props.username });
         }
-        componentDidUpdate (prevProps) {
+        componentDidUpdate(prevProps) {
             if (prevProps.username !== this.props.username) {
-                this.props.vm.postIOData('userData', {username: this.props.username});
+                this.props.vm.postIOData('userData', { username: this.props.username });
             }
 
             // Re-request a targets update when the shouldUpdateTargets state changes to true
@@ -66,24 +66,24 @@ const vmListenerHOC = function (WrappedComponent) {
                 this.props.vm.emitTargetsUpdate(false /* Emit the event, but do not trigger project change */);
             }
         }
-        componentWillUnmount () {
+        componentWillUnmount() {
             this.props.vm.removeListener('PERIPHERAL_CONNECTION_LOST_ERROR', this.props.onShowExtensionAlert);
             if (this.props.attachKeyboardEvents) {
                 document.removeEventListener('keydown', this.handleKeyDown);
                 document.removeEventListener('keyup', this.handleKeyUp);
             }
         }
-        handleProjectChanged () {
+        handleProjectChanged() {
             if (this.props.shouldUpdateProjectChanged && !this.props.projectChanged) {
                 this.props.onProjectChanged();
             }
         }
-        handleTargetsUpdate (data) {
+        handleTargetsUpdate(data) {
             if (this.props.shouldUpdateTargets) {
                 this.props.onTargetsUpdate(data);
             }
         }
-        handleKeyDown (e) {
+        handleKeyDown(e) {
             // Don't capture keys intended for Blockly inputs.
             if (e.target !== document && e.target !== document.body) return;
 
@@ -99,7 +99,7 @@ const vmListenerHOC = function (WrappedComponent) {
                 e.preventDefault();
             }
         }
-        handleKeyUp (e) {
+        handleKeyUp(e) {
             // Always capture up events,
             // even those that have switched to other targets.
             const key = (!e.key || e.key === 'Dead') ? e.keyCode : e.key;
@@ -113,7 +113,7 @@ const vmListenerHOC = function (WrappedComponent) {
                 e.preventDefault();
             }
         }
-        render () {
+        render() {
             const {
                 /* eslint-disable no-unused-vars */
                 attachKeyboardEvents,

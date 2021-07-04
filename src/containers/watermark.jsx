@@ -2,31 +2,31 @@ import bindAll from 'lodash.bindall';
 import omit from 'lodash.omit';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import ThrottledPropertyHOC from '../lib/throttled-property-hoc.jsx';
 
-import VM from 'scratch-vm';
+import VM from '../lib/scratch-vm/scratch-vm';
 import storage from '../lib/storage';
 import getCostumeUrl from '../lib/get-costume-url';
 
 import WatermarkComponent from '../components/watermark/watermark.jsx';
 
 class Watermark extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'getCostumeData'
         ]);
     }
 
-    getCostumeData () {
+    getCostumeData() {
         if (!this.props.asset) return null;
 
         return getCostumeUrl(this.props.asset);
     }
 
-    render () {
+    render() {
         const componentProps = omit(this.props, ['asset', 'vm']);
         return (
             <WatermarkComponent

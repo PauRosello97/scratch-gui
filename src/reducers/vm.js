@@ -1,4 +1,4 @@
-import VM from 'scratch-vm';
+import VM from '../lib/scratch-vm/scratch-vm';
 import storage from '../lib/storage';
 
 const SET_VM = 'scratch-gui/vm/SET_VM';
@@ -9,10 +9,10 @@ const initialState = defaultVM;
 const reducer = function (state, action) {
     if (typeof state === 'undefined') state = initialState;
     switch (action.type) {
-    case SET_VM:
-        return action.vm;
-    default:
-        return state;
+        case SET_VM:
+            return action.vm;
+        default:
+            return state;
     }
 };
 const setVM = function (vm) {

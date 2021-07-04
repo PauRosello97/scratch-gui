@@ -1,20 +1,20 @@
 import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
-import VM from 'scratch-vm';
-import {connect} from 'react-redux';
+import VM from '../lib/scratch-vm/scratch-vm';
+import { connect } from 'react-redux';
 
 import ControlsComponent from '../components/controls/controls.jsx';
 
 class Controls extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'handleGreenFlagClick',
             'handleStopAllClick'
         ]);
     }
-    handleGreenFlagClick (e) {
+    handleGreenFlagClick(e) {
         e.preventDefault();
         if (e.shiftKey) {
             this.props.vm.setTurboMode(!this.props.turbo);
@@ -25,11 +25,11 @@ class Controls extends React.Component {
             this.props.vm.greenFlag();
         }
     }
-    handleStopAllClick (e) {
+    handleStopAllClick(e) {
         e.preventDefault();
         this.props.vm.stopAll();
     }
-    render () {
+    render() {
         const {
             vm, // eslint-disable-line no-unused-vars
             isStarted, // eslint-disable-line no-unused-vars

@@ -2,25 +2,25 @@ import bindAll from 'lodash.bindall';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {connect} from 'react-redux';
-import VM from 'scratch-vm';
+import { connect } from 'react-redux';
+import VM from '../lib/scratch-vm/scratch-vm';
 import Box from '../components/box/box.jsx';
 import greenFlag from '../components/green-flag/icon--green-flag.svg';
 
 class GreenFlagOverlay extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'handleClick'
         ]);
     }
 
-    handleClick () {
+    handleClick() {
         this.props.vm.start();
         this.props.vm.greenFlag();
     }
 
-    render () {
+    render() {
         return (
             <Box
                 className={this.props.wrapperClass}

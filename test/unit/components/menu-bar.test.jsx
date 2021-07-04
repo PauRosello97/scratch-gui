@@ -1,12 +1,12 @@
 import React from 'react';
-import {mountWithIntl} from '../../helpers/intl-helpers';
+import { mountWithIntl } from '../../helpers/intl-helpers';
 import MenuBar from '../../../src/components/menu-bar/menu-bar';
-import {menuInitialState} from '../../../src/reducers/menus';
-import {LoadingState} from '../../../src/reducers/project-state';
+import { menuInitialState } from '../../../src/reducers/menus';
+import { LoadingState } from '../../../src/reducers/project-state';
 
 import configureStore from 'redux-mock-store';
-import {Provider} from 'react-redux';
-import VM from 'scratch-vm';
+import { Provider } from 'react-redux';
+import VM from '../../lib/scratch-vm/scratch-vm';
 
 
 describe('MenuBar Component', () => {
@@ -36,14 +36,14 @@ describe('MenuBar Component', () => {
 
     test('menu bar with an About handler has an About button', () => {
         const onClickAbout = jest.fn();
-        const menuBar = mountWithIntl(getComponent({onClickAbout}));
+        const menuBar = mountWithIntl(getComponent({ onClickAbout }));
         const button = menuBar.find('AboutButton');
         expect(button.exists()).toBe(true);
     });
 
     test('clicking on About button calls the handler', () => {
         const onClickAbout = jest.fn();
-        const menuBar = mountWithIntl(getComponent({onClickAbout}));
+        const menuBar = mountWithIntl(getComponent({ onClickAbout }));
         const button = menuBar.find('AboutButton');
         expect(onClickAbout).toHaveBeenCalledTimes(0);
         button.simulate('click');

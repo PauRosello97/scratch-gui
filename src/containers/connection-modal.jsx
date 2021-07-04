@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import bindAll from 'lodash.bindall';
-import ConnectionModalComponent, {PHASES} from '../components/connection-modal/connection-modal.jsx';
-import VM from 'scratch-vm';
+import ConnectionModalComponent, { PHASES } from '../components/connection-modal/connection-modal.jsx';
+import VM from '../lib/scratch-vm/scratch-vm';
 import analytics from '../lib/analytics';
 import extensionData from '../lib/libraries/extensions/index.jsx';
-import {connect} from 'react-redux';
-import {closeConnectionModal} from '../reducers/modals';
+import { connect } from 'react-redux';
+import { closeConnectionModal } from '../reducers/modals';
 
 class ConnectionModal extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'handleScanning',
@@ -26,20 +26,20 @@ class ConnectionModal extends React.Component {
                 PHASES.connected : PHASES.scanning
         };
     }
-    componentDidMount () {
+    componentDidMount() {
         this.props.vm.on('PERIPHERAL_CONNECTED', this.handleConnected);
         this.props.vm.on('PERIPHERAL_REQUEST_ERROR', this.handleError);
     }
-    componentWillUnmount () {
+    componentWillUnmount() {
         this.props.vm.removeListener('PERIPHERAL_CONNECTED', this.handleConnected);
         this.props.vm.removeListener('PERIPHERAL_REQUEST_ERROR', this.handleError);
     }
-    handleScanning () {
+    handleScanning() {
         this.setState({
             phase: PHASES.scanning
         });
     }
-    handleConnecting (peripheralId) {
+    handleConnecting(peripheralId) {
         this.props.vm.connectPeripheral(this.props.extensionId, peripheralId);
         this.setState({
             phase: PHASES.connecting
@@ -50,14 +50,14 @@ class ConnectionModal extends React.Component {
             label: this.props.extensionId
         });
     }
-    handleDisconnect () {
+    handleDisconnect() {
         try {
             this.props.vm.disconnectPeripheral(this.props.extensionId);
         } finally {
             this.props.onCancel();
         }
     }
-    handleCancel () {
+    handleCancel() {
         try {
             // If we're not connected to a peripheral, close the websocket so we stop scanning.
             if (!this.props.vm.getPeripheralIsConnected(this.props.extensionId)) {
@@ -68,7 +68,7 @@ class ConnectionModal extends React.Component {
             this.props.onCancel();
         }
     }
-    handleError () {
+    handleError() {
         // Assume errors that come in during scanning phase are the result of not
         // having scratch-link installed.
         if (this.state.phase === PHASES.scanning || this.state.phase === PHASES.unavailable) {
@@ -86,7 +86,7 @@ class ConnectionModal extends React.Component {
             });
         }
     }
-    handleConnected () {
+    handleConnected() {
         this.setState({
             phase: PHASES.connected
         });
@@ -96,7 +96,7 @@ class ConnectionModal extends React.Component {
             label: this.props.extensionId
         });
     }
-    handleHelp () {
+    handleHelp() {
         window.open(this.state.extension.helpLink, '_blank');
         analytics.event({
             category: 'extensions',
@@ -104,7 +104,7 @@ class ConnectionModal extends React.Component {
             label: this.props.extensionId
         });
     }
-    render () {
+    render() {
         return (
             <ConnectionModalComponent
                 connectingMessage={this.state.extension && this.state.extension.connectingMessage}

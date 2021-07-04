@@ -1,8 +1,8 @@
 import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {defineMessages, injectIntl, intlShape} from 'react-intl';
-import VM from 'scratch-vm';
+import { defineMessages, injectIntl, intlShape } from 'react-intl';
+import VM from '../lib/scratch-vm/scratch-vm';
 import AudioEngine from 'scratch-audio';
 
 import LibraryComponent from '../components/library/library.jsx';
@@ -13,7 +13,7 @@ import soundIconRtl from '../components/library-item/lib-icon--sound-rtl.svg';
 import soundLibraryContent from '../lib/libraries/sounds.json';
 import soundTags from '../lib/libraries/sound-tags';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 const messages = defineMessages({
     libraryTitle: {
@@ -24,7 +24,7 @@ const messages = defineMessages({
 });
 
 class SoundLibrary extends React.PureComponent {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'handleItemSelected',
@@ -51,24 +51,24 @@ class SoundLibrary extends React.PureComponent {
          */
         this.handleStop = null;
     }
-    componentDidMount () {
+    componentDidMount() {
         this.audioEngine = new AudioEngine();
         this.playingSoundPromise = null;
     }
-    componentWillUnmount () {
+    componentWillUnmount() {
         this.stopPlayingSound();
     }
-    onStop () {
+    onStop() {
         if (this.playingSoundPromise !== null) {
             this.playingSoundPromise.then(soundPlayer => soundPlayer.removeListener('stop', this.onStop));
             if (this.handleStop) this.handleStop();
         }
 
     }
-    setStopHandler (func) {
+    setStopHandler(func) {
         this.handleStop = func;
     }
-    stopPlayingSound () {
+    stopPlayingSound() {
         // Playback is queued, playing, or has played recently and finished
         // normally.
         if (this.playingSoundPromise !== null) {
@@ -94,7 +94,7 @@ class SoundLibrary extends React.PureComponent {
             this.playingSoundPromise = null;
         }
     }
-    handleItemMouseEnter (soundItem) {
+    handleItemMouseEnter(soundItem) {
         const md5ext = soundItem._md5;
         const idParts = md5ext.split('.');
         const md5 = idParts[0];
@@ -130,10 +130,10 @@ class SoundLibrary extends React.PureComponent {
                 return soundPlayer;
             });
     }
-    handleItemMouseLeave () {
+    handleItemMouseLeave() {
         this.stopPlayingSound();
     }
-    handleItemSelected (soundItem) {
+    handleItemSelected(soundItem) {
         const vmSound = {
             format: soundItem.format,
             md5: soundItem._md5,
@@ -145,7 +145,7 @@ class SoundLibrary extends React.PureComponent {
             this.props.onNewSound();
         });
     }
-    render () {
+    render() {
         // @todo need to use this hack to avoid library using md5 for image
         const soundLibraryThumbnailData = soundLibraryContent.map(sound => {
             const {

@@ -2,11 +2,11 @@ import bindAll from 'lodash.bindall';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {connect} from 'react-redux';
-import VM from 'scratch-vm';
+import { connect } from 'react-redux';
+import VM from '../lib/scratch-vm/scratch-vm';
 
 class TargetHighlight extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'getPageCoords'
@@ -14,8 +14,8 @@ class TargetHighlight extends React.Component {
     }
 
     // Transform scratch coordinates into page coordinates
-    getPageCoords (x, y) {
-        const {stageWidth, stageHeight, vm} = this.props;
+    getPageCoords(x, y) {
+        const { stageWidth, stageHeight, vm } = this.props;
         // The renderers "nativeSize" is the [width, height] of the stage in scratch-units
         const nativeSize = vm.renderer.getNativeSize();
         return [
@@ -24,7 +24,7 @@ class TargetHighlight extends React.Component {
         ];
     }
 
-    render () {
+    render() {
         const {
             className,
             highlightedTargetId,

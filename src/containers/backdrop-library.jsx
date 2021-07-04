@@ -1,8 +1,8 @@
 import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {defineMessages, injectIntl, intlShape} from 'react-intl';
-import VM from 'scratch-vm';
+import { defineMessages, injectIntl, intlShape } from 'react-intl';
+import VM from '../lib/scratch-vm/scratch-vm';
 
 import backdropLibraryContent from '../lib/libraries/backdrops.json';
 import backdropTags from '../lib/libraries/backdrop-tags';
@@ -18,13 +18,13 @@ const messages = defineMessages({
 
 
 class BackdropLibrary extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'handleItemSelect'
         ]);
     }
-    handleItemSelect (item) {
+    handleItemSelect(item) {
         const vmBackdrop = {
             name: item.name,
             rotationCenterX: item.rotationCenterX,
@@ -35,7 +35,7 @@ class BackdropLibrary extends React.Component {
         // Do not switch to stage, just add the backdrop
         this.props.vm.addBackdrop(item.md5ext, vmBackdrop);
     }
-    render () {
+    render() {
         return (
             <LibraryComponent
                 data={backdropLibraryContent}

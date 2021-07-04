@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import bindAll from 'lodash.bindall';
 
-import VM from 'scratch-vm';
+import VM from '../lib/scratch-vm/scratch-vm';
 import CloudProvider from '../lib/cloud-provider';
 
 import {
@@ -21,7 +21,7 @@ import {
  */
 const cloudManagerHOC = function (WrappedComponent) {
     class CloudManager extends React.Component {
-        constructor (props) {
+        constructor(props) {
             super(props);
             this.cloudProvider = null;
             bindAll(this, [
@@ -30,12 +30,12 @@ const cloudManagerHOC = function (WrappedComponent) {
 
             this.props.vm.on('HAS_CLOUD_DATA_UPDATE', this.handleCloudDataUpdate);
         }
-        componentDidMount () {
+        componentDidMount() {
             if (this.shouldConnect(this.props)) {
                 this.connectToCloud();
             }
         }
-        componentDidUpdate (prevProps) {
+        componentDidUpdate(prevProps) {
             // TODO need to add cloud provider disconnection logic and cloud data clearing logic
             // when loading a new project e.g. via file upload
             // (and eventually move it out of the vm.clear function)
@@ -48,18 +48,18 @@ const cloudManagerHOC = function (WrappedComponent) {
                 this.disconnectFromCloud();
             }
         }
-        componentWillUnmount () {
+        componentWillUnmount() {
             this.disconnectFromCloud();
         }
-        canUseCloud (props) {
+        canUseCloud(props) {
             return !!(props.cloudHost && props.username && props.vm && props.projectId && props.hasCloudPermission);
         }
-        shouldConnect (props) {
+        shouldConnect(props) {
             return !this.isConnected() && this.canUseCloud(props) &&
                 props.isShowingWithId && props.vm.runtime.hasCloudData() &&
                 props.canModifyCloudData;
         }
-        shouldDisconnect (props, prevProps) {
+        shouldDisconnect(props, prevProps) {
             return this.isConnected() &&
                 ( // Can no longer use cloud or cloud provider info is now stale
                     !this.canUseCloud(props) ||
@@ -70,10 +70,10 @@ const cloudManagerHOC = function (WrappedComponent) {
                     !props.canModifyCloudData
                 );
         }
-        isConnected () {
+        isConnected() {
             return this.cloudProvider && !!this.cloudProvider.connection;
         }
-        connectToCloud () {
+        connectToCloud() {
             this.cloudProvider = new CloudProvider(
                 this.props.cloudHost,
                 this.props.vm,
@@ -81,14 +81,14 @@ const cloudManagerHOC = function (WrappedComponent) {
                 this.props.projectId);
             this.props.vm.setCloudProvider(this.cloudProvider);
         }
-        disconnectFromCloud () {
+        disconnectFromCloud() {
             if (this.cloudProvider) {
                 this.cloudProvider.requestCloseConnection();
                 this.cloudProvider = null;
                 this.props.vm.setCloudProvider(null);
             }
         }
-        handleCloudDataUpdate (projectHasCloudData) {
+        handleCloudDataUpdate(projectHasCloudData) {
             if (this.isConnected() && !projectHasCloudData) {
                 this.disconnectFromCloud();
             } else if (this.shouldConnect(this.props)) {
@@ -96,7 +96,7 @@ const cloudManagerHOC = function (WrappedComponent) {
                 this.connectToCloud();
             }
         }
-        render () {
+        render() {
             const {
                 /* eslint-disable no-unused-vars */
                 canModifyCloudData,
@@ -134,7 +134,7 @@ const cloudManagerHOC = function (WrappedComponent) {
     CloudManager.defaultProps = {
         cloudHost: null,
         hasCloudPermission: false,
-        onShowCloudInfo: () => {},
+        onShowCloudInfo: () => { },
         username: null
     };
 

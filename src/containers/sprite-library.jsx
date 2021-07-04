@@ -1,8 +1,8 @@
 import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {injectIntl, intlShape, defineMessages} from 'react-intl';
-import VM from 'scratch-vm';
+import { injectIntl, intlShape, defineMessages } from 'react-intl';
+import VM from '../lib/scratch-vm/scratch-vm';
 
 import spriteLibraryContent from '../lib/libraries/sprites.json';
 import randomizeSpritePosition from '../lib/randomize-sprite-position';
@@ -19,20 +19,20 @@ const messages = defineMessages({
 });
 
 class SpriteLibrary extends React.PureComponent {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'handleItemSelect'
         ]);
     }
-    handleItemSelect (item) {
+    handleItemSelect(item) {
         // Randomize position of library sprite
         randomizeSpritePosition(item);
         this.props.vm.addSprite(JSON.stringify(item)).then(() => {
             this.props.onActivateBlocksTab();
         });
     }
-    render () {
+    render() {
         return (
             <LibraryComponent
                 data={spriteLibraryContent}

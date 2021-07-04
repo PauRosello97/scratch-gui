@@ -1,15 +1,15 @@
 import classNames from 'classnames';
-import {defineMessages, injectIntl, intlShape} from 'react-intl';
+import { defineMessages, injectIntl, intlShape } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {connect} from 'react-redux';
-import VM from 'scratch-vm';
+import { connect } from 'react-redux';
+import VM from '../../lib/scratch-vm/scratch-vm';
 
 import Box from '../box/box.jsx';
 import Button from '../button/button.jsx';
 import Controls from '../../containers/controls.jsx';
-import {getStageDimensions} from '../../lib/screen-utils';
-import {STAGE_SIZE_MODES} from '../../lib/layout-constants';
+import { getStageDimensions } from '../../lib/screen-utils';
+import { STAGE_SIZE_MODES } from '../../lib/layout-constants';
 
 import fullScreenIcon from './icon--fullscreen.svg';
 import largeStageIcon from './icon--large-stage.svg';
@@ -97,7 +97,7 @@ const StageHeaderComponent = function (props) {
             <Box className={styles.stageHeaderWrapperOverlay}>
                 <Box
                     className={styles.stageMenuWrapper}
-                    style={{width: stageDimensions.width}}
+                    style={{ width: stageDimensions.width }}
                 >
                     <Controls vm={vm} />
                     {stageButton}

@@ -2,9 +2,9 @@ import 'web-audio-test-api';
 
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import {mountWithIntl, shallowWithIntl} from '../../helpers/intl-helpers.jsx';
-import {LoadingState} from '../../../src/reducers/project-state';
-import VM from 'scratch-vm';
+import { mountWithIntl, shallowWithIntl } from '../../helpers/intl-helpers.jsx';
+import { LoadingState } from '../../../src/reducers/project-state';
+import VM from '../../lib/scratch-vm/scratch-vm';
 
 import SBFileUploaderHOC from '../../../src/lib/sb-file-uploader-hoc.jsx';
 
@@ -20,7 +20,7 @@ describe('SBFileUploaderHOC', () => {
     };
 
     const shallowMountWithContext = component => (
-        shallowWithIntl(component, {context: {store}})
+        shallowWithIntl(component, { context: { store } })
     );
 
     const unwrappedInstance = () => {
